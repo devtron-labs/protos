@@ -18,18 +18,18 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// GitServiceClient is the client API for GitService service.
+// GitSensorServiceClient is the client API for GitSensorService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GitServiceClient interface {
+type GitSensorServiceClient interface {
 	// Saves Git credentials
-	SaveGitProvider(ctx context.Context, in *GitProviderExchange, opts ...grpc.CallOption) (*GitProviderExchange, error)
+	SaveGitProvider(ctx context.Context, in *GitProvider, opts ...grpc.CallOption) (*Empty, error)
 	// Add Repo
-	AddRepo(ctx context.Context, in *AddRepoExchange, opts ...grpc.CallOption) (*AddRepoExchange, error)
+	AddRepo(ctx context.Context, in *AddRepoRequest, opts ...grpc.CallOption) (*Empty, error)
 	// Update Repo
-	UpdateRepo(ctx context.Context, in *GitMaterial, opts ...grpc.CallOption) (*GitMaterial, error)
+	UpdateRepo(ctx context.Context, in *GitMaterial, opts ...grpc.CallOption) (*Empty, error)
 	// Save CI pipeline material
-	SavePipelineMaterial(ctx context.Context, in *SavePipelineMaterialExchange, opts ...grpc.CallOption) (*SavePipelineMaterialExchange, error)
+	SavePipelineMaterial(ctx context.Context, in *SavePipelineMaterialRequest, opts ...grpc.CallOption) (*Empty, error)
 	// Fetch SCM changes
 	FetchChanges(ctx context.Context, in *FetchScmChangesRequest, opts ...grpc.CallOption) (*MaterialChangeResponse, error)
 	// Get Head for pipeline materials
@@ -60,188 +60,188 @@ type GitServiceClient interface {
 	GetWebhookPayloadFilterDataForPipelineMaterialId(ctx context.Context, in *WebhookPayloadFilterDataRequest, opts ...grpc.CallOption) (*WebhookPayloadFilterDataResponse, error)
 }
 
-type gitServiceClient struct {
+type gitSensorServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGitServiceClient(cc grpc.ClientConnInterface) GitServiceClient {
-	return &gitServiceClient{cc}
+func NewGitSensorServiceClient(cc grpc.ClientConnInterface) GitSensorServiceClient {
+	return &gitSensorServiceClient{cc}
 }
 
-func (c *gitServiceClient) SaveGitProvider(ctx context.Context, in *GitProviderExchange, opts ...grpc.CallOption) (*GitProviderExchange, error) {
-	out := new(GitProviderExchange)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/SaveGitProvider", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) AddRepo(ctx context.Context, in *AddRepoExchange, opts ...grpc.CallOption) (*AddRepoExchange, error) {
-	out := new(AddRepoExchange)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/AddRepo", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) UpdateRepo(ctx context.Context, in *GitMaterial, opts ...grpc.CallOption) (*GitMaterial, error) {
-	out := new(GitMaterial)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/UpdateRepo", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) SavePipelineMaterial(ctx context.Context, in *SavePipelineMaterialExchange, opts ...grpc.CallOption) (*SavePipelineMaterialExchange, error) {
-	out := new(SavePipelineMaterialExchange)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/SavePipelineMaterial", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) FetchChanges(ctx context.Context, in *FetchScmChangesRequest, opts ...grpc.CallOption) (*MaterialChangeResponse, error) {
-	out := new(MaterialChangeResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/FetchChanges", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) GetHeadForPipelineMaterials(ctx context.Context, in *HeadRequest, opts ...grpc.CallOption) (*GetHeadForPipelineMaterialsResponse, error) {
-	out := new(GetHeadForPipelineMaterialsResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetHeadForPipelineMaterials", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) GetCommitMetadata(ctx context.Context, in *CommitMetadataRequest, opts ...grpc.CallOption) (*GitCommit, error) {
-	out := new(GitCommit)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetCommitMetadata", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) GetCommitMetadataForPipelineMaterial(ctx context.Context, in *CommitMetadataRequest, opts ...grpc.CallOption) (*GitCommit, error) {
-	out := new(GitCommit)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetCommitMetadataForPipelineMaterial", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) GetCommitInfoForTag(ctx context.Context, in *CommitMetadataRequest, opts ...grpc.CallOption) (*GitCommit, error) {
-	out := new(GitCommit)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetCommitInfoForTag", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) RefreshGitMaterial(ctx context.Context, in *RefreshGitMaterialRequest, opts ...grpc.CallOption) (*RefreshGitMaterialResponse, error) {
-	out := new(RefreshGitMaterialResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/RefreshGitMaterial", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *gitServiceClient) ReloadAllMaterial(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+func (c *gitSensorServiceClient) SaveGitProvider(ctx context.Context, in *GitProvider, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/ReloadAllMaterial", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/SaveGitProvider", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) ReloadMaterial(ctx context.Context, in *ReloadMaterialRequest, opts ...grpc.CallOption) (*GenericResponse, error) {
+func (c *gitSensorServiceClient) AddRepo(ctx context.Context, in *AddRepoRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/AddRepo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) UpdateRepo(ctx context.Context, in *GitMaterial, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/UpdateRepo", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) SavePipelineMaterial(ctx context.Context, in *SavePipelineMaterialRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/SavePipelineMaterial", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) FetchChanges(ctx context.Context, in *FetchScmChangesRequest, opts ...grpc.CallOption) (*MaterialChangeResponse, error) {
+	out := new(MaterialChangeResponse)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/FetchChanges", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) GetHeadForPipelineMaterials(ctx context.Context, in *HeadRequest, opts ...grpc.CallOption) (*GetHeadForPipelineMaterialsResponse, error) {
+	out := new(GetHeadForPipelineMaterialsResponse)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetHeadForPipelineMaterials", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) GetCommitMetadata(ctx context.Context, in *CommitMetadataRequest, opts ...grpc.CallOption) (*GitCommit, error) {
+	out := new(GitCommit)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetCommitMetadata", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) GetCommitMetadataForPipelineMaterial(ctx context.Context, in *CommitMetadataRequest, opts ...grpc.CallOption) (*GitCommit, error) {
+	out := new(GitCommit)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetCommitMetadataForPipelineMaterial", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) GetCommitInfoForTag(ctx context.Context, in *CommitMetadataRequest, opts ...grpc.CallOption) (*GitCommit, error) {
+	out := new(GitCommit)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetCommitInfoForTag", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) RefreshGitMaterial(ctx context.Context, in *RefreshGitMaterialRequest, opts ...grpc.CallOption) (*RefreshGitMaterialResponse, error) {
+	out := new(RefreshGitMaterialResponse)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/RefreshGitMaterial", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) ReloadAllMaterial(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/ReloadAllMaterial", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gitSensorServiceClient) ReloadMaterial(ctx context.Context, in *ReloadMaterialRequest, opts ...grpc.CallOption) (*GenericResponse, error) {
 	out := new(GenericResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/ReloadMaterial", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/ReloadMaterial", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) GetChangesInRelease(ctx context.Context, in *ReleaseChangeRequest, opts ...grpc.CallOption) (*GitChanges, error) {
+func (c *gitSensorServiceClient) GetChangesInRelease(ctx context.Context, in *ReleaseChangeRequest, opts ...grpc.CallOption) (*GitChanges, error) {
 	out := new(GitChanges)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetChangesInRelease", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetChangesInRelease", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) GetWebhookData(ctx context.Context, in *WebhookDataRequest, opts ...grpc.CallOption) (*WebhookAndCiData, error) {
+func (c *gitSensorServiceClient) GetWebhookData(ctx context.Context, in *WebhookDataRequest, opts ...grpc.CallOption) (*WebhookAndCiData, error) {
 	out := new(WebhookAndCiData)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetWebhookData", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetWebhookData", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) GetAllWebhookEventConfigForHost(ctx context.Context, in *WebhookEventConfigRequest, opts ...grpc.CallOption) (*WebhookEventConfigResponse, error) {
+func (c *gitSensorServiceClient) GetAllWebhookEventConfigForHost(ctx context.Context, in *WebhookEventConfigRequest, opts ...grpc.CallOption) (*WebhookEventConfigResponse, error) {
 	out := new(WebhookEventConfigResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetAllWebhookEventConfigForHost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetAllWebhookEventConfigForHost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) GetWebhookEventConfig(ctx context.Context, in *WebhookEventConfigRequest, opts ...grpc.CallOption) (*WebhookEventConfig, error) {
+func (c *gitSensorServiceClient) GetWebhookEventConfig(ctx context.Context, in *WebhookEventConfigRequest, opts ...grpc.CallOption) (*WebhookEventConfig, error) {
 	out := new(WebhookEventConfig)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetWebhookEventConfig", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetWebhookEventConfig", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) GetWebhookPayloadDataForPipelineMaterialId(ctx context.Context, in *WebhookPayloadDataRequest, opts ...grpc.CallOption) (*WebhookPayloadDataResponse, error) {
+func (c *gitSensorServiceClient) GetWebhookPayloadDataForPipelineMaterialId(ctx context.Context, in *WebhookPayloadDataRequest, opts ...grpc.CallOption) (*WebhookPayloadDataResponse, error) {
 	out := new(WebhookPayloadDataResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetWebhookPayloadDataForPipelineMaterialId", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetWebhookPayloadDataForPipelineMaterialId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *gitServiceClient) GetWebhookPayloadFilterDataForPipelineMaterialId(ctx context.Context, in *WebhookPayloadFilterDataRequest, opts ...grpc.CallOption) (*WebhookPayloadFilterDataResponse, error) {
+func (c *gitSensorServiceClient) GetWebhookPayloadFilterDataForPipelineMaterialId(ctx context.Context, in *WebhookPayloadFilterDataRequest, opts ...grpc.CallOption) (*WebhookPayloadFilterDataResponse, error) {
 	out := new(WebhookPayloadFilterDataResponse)
-	err := c.cc.Invoke(ctx, "/git_service.GitService/GetWebhookPayloadFilterDataForPipelineMaterialId", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/git_service.GitSensorService/GetWebhookPayloadFilterDataForPipelineMaterialId", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GitServiceServer is the server API for GitService service.
-// All implementations must embed UnimplementedGitServiceServer
+// GitSensorServiceServer is the server API for GitSensorService service.
+// All implementations must embed UnimplementedGitSensorServiceServer
 // for forward compatibility
-type GitServiceServer interface {
+type GitSensorServiceServer interface {
 	// Saves Git credentials
-	SaveGitProvider(context.Context, *GitProviderExchange) (*GitProviderExchange, error)
+	SaveGitProvider(context.Context, *GitProvider) (*Empty, error)
 	// Add Repo
-	AddRepo(context.Context, *AddRepoExchange) (*AddRepoExchange, error)
+	AddRepo(context.Context, *AddRepoRequest) (*Empty, error)
 	// Update Repo
-	UpdateRepo(context.Context, *GitMaterial) (*GitMaterial, error)
+	UpdateRepo(context.Context, *GitMaterial) (*Empty, error)
 	// Save CI pipeline material
-	SavePipelineMaterial(context.Context, *SavePipelineMaterialExchange) (*SavePipelineMaterialExchange, error)
+	SavePipelineMaterial(context.Context, *SavePipelineMaterialRequest) (*Empty, error)
 	// Fetch SCM changes
 	FetchChanges(context.Context, *FetchScmChangesRequest) (*MaterialChangeResponse, error)
 	// Get Head for pipeline materials
@@ -270,482 +270,482 @@ type GitServiceServer interface {
 	GetWebhookPayloadDataForPipelineMaterialId(context.Context, *WebhookPayloadDataRequest) (*WebhookPayloadDataResponse, error)
 	// Get webhook payload data by pipeline material id with filter
 	GetWebhookPayloadFilterDataForPipelineMaterialId(context.Context, *WebhookPayloadFilterDataRequest) (*WebhookPayloadFilterDataResponse, error)
-	mustEmbedUnimplementedGitServiceServer()
+	mustEmbedUnimplementedGitSensorServiceServer()
 }
 
-// UnimplementedGitServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedGitServiceServer struct {
+// UnimplementedGitSensorServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedGitSensorServiceServer struct {
 }
 
-func (UnimplementedGitServiceServer) SaveGitProvider(context.Context, *GitProviderExchange) (*GitProviderExchange, error) {
+func (UnimplementedGitSensorServiceServer) SaveGitProvider(context.Context, *GitProvider) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SaveGitProvider not implemented")
 }
-func (UnimplementedGitServiceServer) AddRepo(context.Context, *AddRepoExchange) (*AddRepoExchange, error) {
+func (UnimplementedGitSensorServiceServer) AddRepo(context.Context, *AddRepoRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRepo not implemented")
 }
-func (UnimplementedGitServiceServer) UpdateRepo(context.Context, *GitMaterial) (*GitMaterial, error) {
+func (UnimplementedGitSensorServiceServer) UpdateRepo(context.Context, *GitMaterial) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateRepo not implemented")
 }
-func (UnimplementedGitServiceServer) SavePipelineMaterial(context.Context, *SavePipelineMaterialExchange) (*SavePipelineMaterialExchange, error) {
+func (UnimplementedGitSensorServiceServer) SavePipelineMaterial(context.Context, *SavePipelineMaterialRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SavePipelineMaterial not implemented")
 }
-func (UnimplementedGitServiceServer) FetchChanges(context.Context, *FetchScmChangesRequest) (*MaterialChangeResponse, error) {
+func (UnimplementedGitSensorServiceServer) FetchChanges(context.Context, *FetchScmChangesRequest) (*MaterialChangeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FetchChanges not implemented")
 }
-func (UnimplementedGitServiceServer) GetHeadForPipelineMaterials(context.Context, *HeadRequest) (*GetHeadForPipelineMaterialsResponse, error) {
+func (UnimplementedGitSensorServiceServer) GetHeadForPipelineMaterials(context.Context, *HeadRequest) (*GetHeadForPipelineMaterialsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetHeadForPipelineMaterials not implemented")
 }
-func (UnimplementedGitServiceServer) GetCommitMetadata(context.Context, *CommitMetadataRequest) (*GitCommit, error) {
+func (UnimplementedGitSensorServiceServer) GetCommitMetadata(context.Context, *CommitMetadataRequest) (*GitCommit, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCommitMetadata not implemented")
 }
-func (UnimplementedGitServiceServer) GetCommitMetadataForPipelineMaterial(context.Context, *CommitMetadataRequest) (*GitCommit, error) {
+func (UnimplementedGitSensorServiceServer) GetCommitMetadataForPipelineMaterial(context.Context, *CommitMetadataRequest) (*GitCommit, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCommitMetadataForPipelineMaterial not implemented")
 }
-func (UnimplementedGitServiceServer) GetCommitInfoForTag(context.Context, *CommitMetadataRequest) (*GitCommit, error) {
+func (UnimplementedGitSensorServiceServer) GetCommitInfoForTag(context.Context, *CommitMetadataRequest) (*GitCommit, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCommitInfoForTag not implemented")
 }
-func (UnimplementedGitServiceServer) RefreshGitMaterial(context.Context, *RefreshGitMaterialRequest) (*RefreshGitMaterialResponse, error) {
+func (UnimplementedGitSensorServiceServer) RefreshGitMaterial(context.Context, *RefreshGitMaterialRequest) (*RefreshGitMaterialResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RefreshGitMaterial not implemented")
 }
-func (UnimplementedGitServiceServer) ReloadAllMaterial(context.Context, *Empty) (*Empty, error) {
+func (UnimplementedGitSensorServiceServer) ReloadAllMaterial(context.Context, *Empty) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReloadAllMaterial not implemented")
 }
-func (UnimplementedGitServiceServer) ReloadMaterial(context.Context, *ReloadMaterialRequest) (*GenericResponse, error) {
+func (UnimplementedGitSensorServiceServer) ReloadMaterial(context.Context, *ReloadMaterialRequest) (*GenericResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReloadMaterial not implemented")
 }
-func (UnimplementedGitServiceServer) GetChangesInRelease(context.Context, *ReleaseChangeRequest) (*GitChanges, error) {
+func (UnimplementedGitSensorServiceServer) GetChangesInRelease(context.Context, *ReleaseChangeRequest) (*GitChanges, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetChangesInRelease not implemented")
 }
-func (UnimplementedGitServiceServer) GetWebhookData(context.Context, *WebhookDataRequest) (*WebhookAndCiData, error) {
+func (UnimplementedGitSensorServiceServer) GetWebhookData(context.Context, *WebhookDataRequest) (*WebhookAndCiData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWebhookData not implemented")
 }
-func (UnimplementedGitServiceServer) GetAllWebhookEventConfigForHost(context.Context, *WebhookEventConfigRequest) (*WebhookEventConfigResponse, error) {
+func (UnimplementedGitSensorServiceServer) GetAllWebhookEventConfigForHost(context.Context, *WebhookEventConfigRequest) (*WebhookEventConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllWebhookEventConfigForHost not implemented")
 }
-func (UnimplementedGitServiceServer) GetWebhookEventConfig(context.Context, *WebhookEventConfigRequest) (*WebhookEventConfig, error) {
+func (UnimplementedGitSensorServiceServer) GetWebhookEventConfig(context.Context, *WebhookEventConfigRequest) (*WebhookEventConfig, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWebhookEventConfig not implemented")
 }
-func (UnimplementedGitServiceServer) GetWebhookPayloadDataForPipelineMaterialId(context.Context, *WebhookPayloadDataRequest) (*WebhookPayloadDataResponse, error) {
+func (UnimplementedGitSensorServiceServer) GetWebhookPayloadDataForPipelineMaterialId(context.Context, *WebhookPayloadDataRequest) (*WebhookPayloadDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWebhookPayloadDataForPipelineMaterialId not implemented")
 }
-func (UnimplementedGitServiceServer) GetWebhookPayloadFilterDataForPipelineMaterialId(context.Context, *WebhookPayloadFilterDataRequest) (*WebhookPayloadFilterDataResponse, error) {
+func (UnimplementedGitSensorServiceServer) GetWebhookPayloadFilterDataForPipelineMaterialId(context.Context, *WebhookPayloadFilterDataRequest) (*WebhookPayloadFilterDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetWebhookPayloadFilterDataForPipelineMaterialId not implemented")
 }
-func (UnimplementedGitServiceServer) mustEmbedUnimplementedGitServiceServer() {}
+func (UnimplementedGitSensorServiceServer) mustEmbedUnimplementedGitSensorServiceServer() {}
 
-// UnsafeGitServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GitServiceServer will
+// UnsafeGitSensorServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to GitSensorServiceServer will
 // result in compilation errors.
-type UnsafeGitServiceServer interface {
-	mustEmbedUnimplementedGitServiceServer()
+type UnsafeGitSensorServiceServer interface {
+	mustEmbedUnimplementedGitSensorServiceServer()
 }
 
-func RegisterGitServiceServer(s grpc.ServiceRegistrar, srv GitServiceServer) {
-	s.RegisterService(&GitService_ServiceDesc, srv)
+func RegisterGitSensorServiceServer(s grpc.ServiceRegistrar, srv GitSensorServiceServer) {
+	s.RegisterService(&GitSensorService_ServiceDesc, srv)
 }
 
-func _GitService_SaveGitProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GitProviderExchange)
+func _GitSensorService_SaveGitProvider_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GitProvider)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).SaveGitProvider(ctx, in)
+		return srv.(GitSensorServiceServer).SaveGitProvider(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/SaveGitProvider",
+		FullMethod: "/git_service.GitSensorService/SaveGitProvider",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).SaveGitProvider(ctx, req.(*GitProviderExchange))
+		return srv.(GitSensorServiceServer).SaveGitProvider(ctx, req.(*GitProvider))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_AddRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddRepoExchange)
+func _GitSensorService_AddRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddRepoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).AddRepo(ctx, in)
+		return srv.(GitSensorServiceServer).AddRepo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/AddRepo",
+		FullMethod: "/git_service.GitSensorService/AddRepo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).AddRepo(ctx, req.(*AddRepoExchange))
+		return srv.(GitSensorServiceServer).AddRepo(ctx, req.(*AddRepoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_UpdateRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_UpdateRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GitMaterial)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).UpdateRepo(ctx, in)
+		return srv.(GitSensorServiceServer).UpdateRepo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/UpdateRepo",
+		FullMethod: "/git_service.GitSensorService/UpdateRepo",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).UpdateRepo(ctx, req.(*GitMaterial))
+		return srv.(GitSensorServiceServer).UpdateRepo(ctx, req.(*GitMaterial))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_SavePipelineMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SavePipelineMaterialExchange)
+func _GitSensorService_SavePipelineMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SavePipelineMaterialRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).SavePipelineMaterial(ctx, in)
+		return srv.(GitSensorServiceServer).SavePipelineMaterial(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/SavePipelineMaterial",
+		FullMethod: "/git_service.GitSensorService/SavePipelineMaterial",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).SavePipelineMaterial(ctx, req.(*SavePipelineMaterialExchange))
+		return srv.(GitSensorServiceServer).SavePipelineMaterial(ctx, req.(*SavePipelineMaterialRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_FetchChanges_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_FetchChanges_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FetchScmChangesRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).FetchChanges(ctx, in)
+		return srv.(GitSensorServiceServer).FetchChanges(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/FetchChanges",
+		FullMethod: "/git_service.GitSensorService/FetchChanges",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).FetchChanges(ctx, req.(*FetchScmChangesRequest))
+		return srv.(GitSensorServiceServer).FetchChanges(ctx, req.(*FetchScmChangesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetHeadForPipelineMaterials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetHeadForPipelineMaterials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HeadRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetHeadForPipelineMaterials(ctx, in)
+		return srv.(GitSensorServiceServer).GetHeadForPipelineMaterials(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetHeadForPipelineMaterials",
+		FullMethod: "/git_service.GitSensorService/GetHeadForPipelineMaterials",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetHeadForPipelineMaterials(ctx, req.(*HeadRequest))
+		return srv.(GitSensorServiceServer).GetHeadForPipelineMaterials(ctx, req.(*HeadRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetCommitMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetCommitMetadata_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CommitMetadataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetCommitMetadata(ctx, in)
+		return srv.(GitSensorServiceServer).GetCommitMetadata(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetCommitMetadata",
+		FullMethod: "/git_service.GitSensorService/GetCommitMetadata",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetCommitMetadata(ctx, req.(*CommitMetadataRequest))
+		return srv.(GitSensorServiceServer).GetCommitMetadata(ctx, req.(*CommitMetadataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetCommitMetadataForPipelineMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetCommitMetadataForPipelineMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CommitMetadataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetCommitMetadataForPipelineMaterial(ctx, in)
+		return srv.(GitSensorServiceServer).GetCommitMetadataForPipelineMaterial(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetCommitMetadataForPipelineMaterial",
+		FullMethod: "/git_service.GitSensorService/GetCommitMetadataForPipelineMaterial",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetCommitMetadataForPipelineMaterial(ctx, req.(*CommitMetadataRequest))
+		return srv.(GitSensorServiceServer).GetCommitMetadataForPipelineMaterial(ctx, req.(*CommitMetadataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetCommitInfoForTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetCommitInfoForTag_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CommitMetadataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetCommitInfoForTag(ctx, in)
+		return srv.(GitSensorServiceServer).GetCommitInfoForTag(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetCommitInfoForTag",
+		FullMethod: "/git_service.GitSensorService/GetCommitInfoForTag",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetCommitInfoForTag(ctx, req.(*CommitMetadataRequest))
+		return srv.(GitSensorServiceServer).GetCommitInfoForTag(ctx, req.(*CommitMetadataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_RefreshGitMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_RefreshGitMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RefreshGitMaterialRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).RefreshGitMaterial(ctx, in)
+		return srv.(GitSensorServiceServer).RefreshGitMaterial(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/RefreshGitMaterial",
+		FullMethod: "/git_service.GitSensorService/RefreshGitMaterial",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).RefreshGitMaterial(ctx, req.(*RefreshGitMaterialRequest))
+		return srv.(GitSensorServiceServer).RefreshGitMaterial(ctx, req.(*RefreshGitMaterialRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_ReloadAllMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_ReloadAllMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).ReloadAllMaterial(ctx, in)
+		return srv.(GitSensorServiceServer).ReloadAllMaterial(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/ReloadAllMaterial",
+		FullMethod: "/git_service.GitSensorService/ReloadAllMaterial",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).ReloadAllMaterial(ctx, req.(*Empty))
+		return srv.(GitSensorServiceServer).ReloadAllMaterial(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_ReloadMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_ReloadMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReloadMaterialRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).ReloadMaterial(ctx, in)
+		return srv.(GitSensorServiceServer).ReloadMaterial(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/ReloadMaterial",
+		FullMethod: "/git_service.GitSensorService/ReloadMaterial",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).ReloadMaterial(ctx, req.(*ReloadMaterialRequest))
+		return srv.(GitSensorServiceServer).ReloadMaterial(ctx, req.(*ReloadMaterialRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetChangesInRelease_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetChangesInRelease_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReleaseChangeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetChangesInRelease(ctx, in)
+		return srv.(GitSensorServiceServer).GetChangesInRelease(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetChangesInRelease",
+		FullMethod: "/git_service.GitSensorService/GetChangesInRelease",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetChangesInRelease(ctx, req.(*ReleaseChangeRequest))
+		return srv.(GitSensorServiceServer).GetChangesInRelease(ctx, req.(*ReleaseChangeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetWebhookData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetWebhookData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebhookDataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetWebhookData(ctx, in)
+		return srv.(GitSensorServiceServer).GetWebhookData(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetWebhookData",
+		FullMethod: "/git_service.GitSensorService/GetWebhookData",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetWebhookData(ctx, req.(*WebhookDataRequest))
+		return srv.(GitSensorServiceServer).GetWebhookData(ctx, req.(*WebhookDataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetAllWebhookEventConfigForHost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetAllWebhookEventConfigForHost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebhookEventConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetAllWebhookEventConfigForHost(ctx, in)
+		return srv.(GitSensorServiceServer).GetAllWebhookEventConfigForHost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetAllWebhookEventConfigForHost",
+		FullMethod: "/git_service.GitSensorService/GetAllWebhookEventConfigForHost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetAllWebhookEventConfigForHost(ctx, req.(*WebhookEventConfigRequest))
+		return srv.(GitSensorServiceServer).GetAllWebhookEventConfigForHost(ctx, req.(*WebhookEventConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetWebhookEventConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetWebhookEventConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebhookEventConfigRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetWebhookEventConfig(ctx, in)
+		return srv.(GitSensorServiceServer).GetWebhookEventConfig(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetWebhookEventConfig",
+		FullMethod: "/git_service.GitSensorService/GetWebhookEventConfig",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetWebhookEventConfig(ctx, req.(*WebhookEventConfigRequest))
+		return srv.(GitSensorServiceServer).GetWebhookEventConfig(ctx, req.(*WebhookEventConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetWebhookPayloadDataForPipelineMaterialId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetWebhookPayloadDataForPipelineMaterialId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebhookPayloadDataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetWebhookPayloadDataForPipelineMaterialId(ctx, in)
+		return srv.(GitSensorServiceServer).GetWebhookPayloadDataForPipelineMaterialId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetWebhookPayloadDataForPipelineMaterialId",
+		FullMethod: "/git_service.GitSensorService/GetWebhookPayloadDataForPipelineMaterialId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetWebhookPayloadDataForPipelineMaterialId(ctx, req.(*WebhookPayloadDataRequest))
+		return srv.(GitSensorServiceServer).GetWebhookPayloadDataForPipelineMaterialId(ctx, req.(*WebhookPayloadDataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GitService_GetWebhookPayloadFilterDataForPipelineMaterialId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _GitSensorService_GetWebhookPayloadFilterDataForPipelineMaterialId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(WebhookPayloadFilterDataRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GitServiceServer).GetWebhookPayloadFilterDataForPipelineMaterialId(ctx, in)
+		return srv.(GitSensorServiceServer).GetWebhookPayloadFilterDataForPipelineMaterialId(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/git_service.GitService/GetWebhookPayloadFilterDataForPipelineMaterialId",
+		FullMethod: "/git_service.GitSensorService/GetWebhookPayloadFilterDataForPipelineMaterialId",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitServiceServer).GetWebhookPayloadFilterDataForPipelineMaterialId(ctx, req.(*WebhookPayloadFilterDataRequest))
+		return srv.(GitSensorServiceServer).GetWebhookPayloadFilterDataForPipelineMaterialId(ctx, req.(*WebhookPayloadFilterDataRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GitService_ServiceDesc is the grpc.ServiceDesc for GitService service.
+// GitSensorService_ServiceDesc is the grpc.ServiceDesc for GitSensorService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GitService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "git_service.GitService",
-	HandlerType: (*GitServiceServer)(nil),
+var GitSensorService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "git_service.GitSensorService",
+	HandlerType: (*GitSensorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SaveGitProvider",
-			Handler:    _GitService_SaveGitProvider_Handler,
+			Handler:    _GitSensorService_SaveGitProvider_Handler,
 		},
 		{
 			MethodName: "AddRepo",
-			Handler:    _GitService_AddRepo_Handler,
+			Handler:    _GitSensorService_AddRepo_Handler,
 		},
 		{
 			MethodName: "UpdateRepo",
-			Handler:    _GitService_UpdateRepo_Handler,
+			Handler:    _GitSensorService_UpdateRepo_Handler,
 		},
 		{
 			MethodName: "SavePipelineMaterial",
-			Handler:    _GitService_SavePipelineMaterial_Handler,
+			Handler:    _GitSensorService_SavePipelineMaterial_Handler,
 		},
 		{
 			MethodName: "FetchChanges",
-			Handler:    _GitService_FetchChanges_Handler,
+			Handler:    _GitSensorService_FetchChanges_Handler,
 		},
 		{
 			MethodName: "GetHeadForPipelineMaterials",
-			Handler:    _GitService_GetHeadForPipelineMaterials_Handler,
+			Handler:    _GitSensorService_GetHeadForPipelineMaterials_Handler,
 		},
 		{
 			MethodName: "GetCommitMetadata",
-			Handler:    _GitService_GetCommitMetadata_Handler,
+			Handler:    _GitSensorService_GetCommitMetadata_Handler,
 		},
 		{
 			MethodName: "GetCommitMetadataForPipelineMaterial",
-			Handler:    _GitService_GetCommitMetadataForPipelineMaterial_Handler,
+			Handler:    _GitSensorService_GetCommitMetadataForPipelineMaterial_Handler,
 		},
 		{
 			MethodName: "GetCommitInfoForTag",
-			Handler:    _GitService_GetCommitInfoForTag_Handler,
+			Handler:    _GitSensorService_GetCommitInfoForTag_Handler,
 		},
 		{
 			MethodName: "RefreshGitMaterial",
-			Handler:    _GitService_RefreshGitMaterial_Handler,
+			Handler:    _GitSensorService_RefreshGitMaterial_Handler,
 		},
 		{
 			MethodName: "ReloadAllMaterial",
-			Handler:    _GitService_ReloadAllMaterial_Handler,
+			Handler:    _GitSensorService_ReloadAllMaterial_Handler,
 		},
 		{
 			MethodName: "ReloadMaterial",
-			Handler:    _GitService_ReloadMaterial_Handler,
+			Handler:    _GitSensorService_ReloadMaterial_Handler,
 		},
 		{
 			MethodName: "GetChangesInRelease",
-			Handler:    _GitService_GetChangesInRelease_Handler,
+			Handler:    _GitSensorService_GetChangesInRelease_Handler,
 		},
 		{
 			MethodName: "GetWebhookData",
-			Handler:    _GitService_GetWebhookData_Handler,
+			Handler:    _GitSensorService_GetWebhookData_Handler,
 		},
 		{
 			MethodName: "GetAllWebhookEventConfigForHost",
-			Handler:    _GitService_GetAllWebhookEventConfigForHost_Handler,
+			Handler:    _GitSensorService_GetAllWebhookEventConfigForHost_Handler,
 		},
 		{
 			MethodName: "GetWebhookEventConfig",
-			Handler:    _GitService_GetWebhookEventConfig_Handler,
+			Handler:    _GitSensorService_GetWebhookEventConfig_Handler,
 		},
 		{
 			MethodName: "GetWebhookPayloadDataForPipelineMaterialId",
-			Handler:    _GitService_GetWebhookPayloadDataForPipelineMaterialId_Handler,
+			Handler:    _GitSensorService_GetWebhookPayloadDataForPipelineMaterialId_Handler,
 		},
 		{
 			MethodName: "GetWebhookPayloadFilterDataForPipelineMaterialId",
-			Handler:    _GitService_GetWebhookPayloadFilterDataForPipelineMaterialId_Handler,
+			Handler:    _GitSensorService_GetWebhookPayloadFilterDataForPipelineMaterialId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

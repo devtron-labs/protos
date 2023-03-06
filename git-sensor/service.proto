@@ -6,11 +6,11 @@ option go_package = "github.com/devtron-labs/protos/git-sensor";
 
 import "google/protobuf/timestamp.proto";
 
-message AddRepoExchange {
+message AddRepoRequest {
   repeated GitMaterial gitMaterialList = 1;
 }
 
-message GitProviderExchange {
+message GitProvider {
   int64 id = 1;
   string name = 2;
   string url = 3;
@@ -34,8 +34,8 @@ message GitMaterial {
   bool deleted = 9;
 }
 
-message SavePipelineMaterialExchange {
-  repeated CiPipelineMaterial ciPipelineMaterialList = 1;
+message SavePipelineMaterialRequest {
+  repeated CiPipelineMaterial ciPipelineMaterials = 1;
 }
 
 message CiPipelineMaterial {
@@ -264,21 +264,22 @@ message WebhookPayloadFilterDataSelectorResponse {
 message WebhookPayloadFilterDataResponse {
   int64 payloadId = 1;
   repeated WebhookPayloadFilterDataSelectorResponse selectorsData = 2;
+  string payloadJson = 3;
 }
 
-service GitService {
+service GitSensorService {
 
   // Saves Git credentials
-  rpc SaveGitProvider(GitProviderExchange) returns (GitProviderExchange);
+  rpc SaveGitProvider(GitProvider) returns (Empty);
 
   // Add Repo
-  rpc AddRepo(AddRepoExchange) returns (AddRepoExchange);
+  rpc AddRepo(AddRepoRequest) returns (Empty);
 
   // Update Repo
-  rpc UpdateRepo(GitMaterial) returns (GitMaterial);
+  rpc UpdateRepo(GitMaterial) returns (Empty);
 
   // Save CI pipeline material
-  rpc SavePipelineMaterial(SavePipelineMaterialExchange) returns (SavePipelineMaterialExchange);
+  rpc SavePipelineMaterial(SavePipelineMaterialRequest) returns (Empty);
 
   // Fetch SCM changes
   rpc FetchChanges(FetchScmChangesRequest) returns (MaterialChangeResponse);
