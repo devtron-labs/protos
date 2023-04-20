@@ -32,6 +32,7 @@ message GitMaterial {
   bool checkoutStatus = 7;
   string checkoutMsgAny = 8;
   bool deleted = 9;
+  int64 nodeId = 10;
 }
 
 message SavePipelineMaterialRequest {
