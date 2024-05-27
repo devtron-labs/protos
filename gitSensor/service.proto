@@ -8,12 +8,6 @@ import "google/protobuf/timestamp.proto";
 
 message AddRepoRequest {
   repeated GitMaterial gitMaterialList = 1;
-  string cloningMode = 2;
-}
-
-message UpdateRepoRequest {
-  GitMaterial gitMaterial = 1;
-  string cloningMode = 2;
 }
 
 message GitProvider {
@@ -39,6 +33,7 @@ message GitMaterial {
   string checkoutMsgAny = 8;
   bool deleted = 9;
   repeated string filterPattern = 10;
+  string cloningMode = 11;
 }
 
 message SavePipelineMaterialRequest {
@@ -295,7 +290,7 @@ service GitSensorService {
   rpc AddRepo(AddRepoRequest) returns (Empty);
 
   // Update Repo
-  rpc UpdateRepo(UpdateRepoRequest) returns (Empty);
+  rpc UpdateRepo(GitMaterial) returns (Empty);
 
   // Save CI pipeline material
   rpc SavePipelineMaterial(SavePipelineMaterialRequest) returns (Empty);
