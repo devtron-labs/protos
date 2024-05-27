@@ -8,6 +8,12 @@ import "google/protobuf/timestamp.proto";
 
 message AddRepoRequest {
   repeated GitMaterial gitMaterialList = 1;
+  string cloningMode = 2;
+}
+
+message UpdateRepoRequest {
+  GitMaterial gitMaterial = 1;
+  string cloningMode = 2;
 }
 
 message GitProvider {
@@ -37,7 +43,6 @@ message GitMaterial {
 
 message SavePipelineMaterialRequest {
   repeated CiPipelineMaterial ciPipelineMaterials = 1;
-  string CloningMode = 2;
 }
 
 message CiPipelineMaterial {
