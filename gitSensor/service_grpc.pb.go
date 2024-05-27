@@ -30,6 +30,7 @@ const (
 	GitSensorService_GetCommitInfoForTag_FullMethodName                              = "/gitService.GitSensorService/GetCommitInfoForTag"
 	GitSensorService_RefreshGitMaterial_FullMethodName                               = "/gitService.GitSensorService/RefreshGitMaterial"
 	GitSensorService_ReloadAllMaterial_FullMethodName                                = "/gitService.GitSensorService/ReloadAllMaterial"
+	GitSensorService_ReloadMaterials_FullMethodName                                  = "/gitService.GitSensorService/ReloadMaterials"
 	GitSensorService_ReloadMaterial_FullMethodName                                   = "/gitService.GitSensorService/ReloadMaterial"
 	GitSensorService_GetChangesInRelease_FullMethodName                              = "/gitService.GitSensorService/GetChangesInRelease"
 	GitSensorService_GetWebhookData_FullMethodName                                   = "/gitService.GitSensorService/GetWebhookData"
@@ -65,6 +66,8 @@ type GitSensorServiceClient interface {
 	RefreshGitMaterial(ctx context.Context, in *RefreshGitMaterialRequest, opts ...grpc.CallOption) (*RefreshGitMaterialResponse, error)
 	// Reload all material
 	ReloadAllMaterial(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
+	// Reload list of materials
+	ReloadMaterials(ctx context.Context, in *ReloadMaterialsRequest, opts ...grpc.CallOption) (*GenericResponse, error)
 	// Reload a specific material
 	ReloadMaterial(ctx context.Context, in *ReloadMaterialRequest, opts ...grpc.CallOption) (*GenericResponse, error)
 	// Get changes in release
@@ -188,6 +191,15 @@ func (c *gitSensorServiceClient) ReloadAllMaterial(ctx context.Context, in *Empt
 	return out, nil
 }
 
+func (c *gitSensorServiceClient) ReloadMaterials(ctx context.Context, in *ReloadMaterialsRequest, opts ...grpc.CallOption) (*GenericResponse, error) {
+	out := new(GenericResponse)
+	err := c.cc.Invoke(ctx, GitSensorService_ReloadMaterials_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *gitSensorServiceClient) ReloadMaterial(ctx context.Context, in *ReloadMaterialRequest, opts ...grpc.CallOption) (*GenericResponse, error) {
 	out := new(GenericResponse)
 	err := c.cc.Invoke(ctx, GitSensorService_ReloadMaterial_FullMethodName, in, out, opts...)
@@ -277,6 +289,8 @@ type GitSensorServiceServer interface {
 	RefreshGitMaterial(context.Context, *RefreshGitMaterialRequest) (*RefreshGitMaterialResponse, error)
 	// Reload all material
 	ReloadAllMaterial(context.Context, *Empty) (*Empty, error)
+	// Reload list of materials
+	ReloadMaterials(context.Context, *ReloadMaterialsRequest) (*GenericResponse, error)
 	// Reload a specific material
 	ReloadMaterial(context.Context, *ReloadMaterialRequest) (*GenericResponse, error)
 	// Get changes in release
@@ -330,6 +344,9 @@ func (UnimplementedGitSensorServiceServer) RefreshGitMaterial(context.Context, *
 }
 func (UnimplementedGitSensorServiceServer) ReloadAllMaterial(context.Context, *Empty) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReloadAllMaterial not implemented")
+}
+func (UnimplementedGitSensorServiceServer) ReloadMaterials(context.Context, *ReloadMaterialsRequest) (*GenericResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReloadMaterials not implemented")
 }
 func (UnimplementedGitSensorServiceServer) ReloadMaterial(context.Context, *ReloadMaterialRequest) (*GenericResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReloadMaterial not implemented")
@@ -563,6 +580,24 @@ func _GitSensorService_ReloadAllMaterial_Handler(srv interface{}, ctx context.Co
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GitSensorService_ReloadMaterials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReloadMaterialsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GitSensorServiceServer).ReloadMaterials(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GitSensorService_ReloadMaterials_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GitSensorServiceServer).ReloadMaterials(ctx, req.(*ReloadMaterialsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _GitSensorService_ReloadMaterial_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReloadMaterialRequest)
 	if err := dec(in); err != nil {
@@ -739,6 +774,10 @@ var GitSensorService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ReloadAllMaterial",
 			Handler:    _GitSensorService_ReloadAllMaterial_Handler,
+		},
+		{
+			MethodName: "ReloadMaterials",
+			Handler:    _GitSensorService_ReloadMaterials_Handler,
 		},
 		{
 			MethodName: "ReloadMaterial",
