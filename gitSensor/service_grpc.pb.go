@@ -48,7 +48,7 @@ type GitSensorServiceClient interface {
 	// Add Repo
 	AddRepo(ctx context.Context, in *AddRepoRequest, opts ...grpc.CallOption) (*Empty, error)
 	// Update Repo
-	UpdateRepo(ctx context.Context, in *GitMaterial, opts ...grpc.CallOption) (*Empty, error)
+	UpdateRepo(ctx context.Context, in *UpdateRepoRequest, opts ...grpc.CallOption) (*Empty, error)
 	// Save CI pipeline material
 	SavePipelineMaterial(ctx context.Context, in *SavePipelineMaterialRequest, opts ...grpc.CallOption) (*Empty, error)
 	// Fetch SCM changes
@@ -107,7 +107,7 @@ func (c *gitSensorServiceClient) AddRepo(ctx context.Context, in *AddRepoRequest
 	return out, nil
 }
 
-func (c *gitSensorServiceClient) UpdateRepo(ctx context.Context, in *GitMaterial, opts ...grpc.CallOption) (*Empty, error) {
+func (c *gitSensorServiceClient) UpdateRepo(ctx context.Context, in *UpdateRepoRequest, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, GitSensorService_UpdateRepo_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -260,7 +260,7 @@ type GitSensorServiceServer interface {
 	// Add Repo
 	AddRepo(context.Context, *AddRepoRequest) (*Empty, error)
 	// Update Repo
-	UpdateRepo(context.Context, *GitMaterial) (*Empty, error)
+	UpdateRepo(context.Context, *UpdateRepoRequest) (*Empty, error)
 	// Save CI pipeline material
 	SavePipelineMaterial(context.Context, *SavePipelineMaterialRequest) (*Empty, error)
 	// Fetch SCM changes
@@ -304,7 +304,7 @@ func (UnimplementedGitSensorServiceServer) SaveGitProvider(context.Context, *Git
 func (UnimplementedGitSensorServiceServer) AddRepo(context.Context, *AddRepoRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddRepo not implemented")
 }
-func (UnimplementedGitSensorServiceServer) UpdateRepo(context.Context, *GitMaterial) (*Empty, error) {
+func (UnimplementedGitSensorServiceServer) UpdateRepo(context.Context, *UpdateRepoRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateRepo not implemented")
 }
 func (UnimplementedGitSensorServiceServer) SavePipelineMaterial(context.Context, *SavePipelineMaterialRequest) (*Empty, error) {
@@ -402,7 +402,7 @@ func _GitSensorService_AddRepo_Handler(srv interface{}, ctx context.Context, dec
 }
 
 func _GitSensorService_UpdateRepo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GitMaterial)
+	in := new(UpdateRepoRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -414,7 +414,7 @@ func _GitSensorService_UpdateRepo_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: GitSensorService_UpdateRepo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GitSensorServiceServer).UpdateRepo(ctx, req.(*GitMaterial))
+		return srv.(GitSensorServiceServer).UpdateRepo(ctx, req.(*UpdateRepoRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
