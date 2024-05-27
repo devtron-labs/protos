@@ -37,6 +37,7 @@ message GitMaterial {
 
 message SavePipelineMaterialRequest {
   repeated CiPipelineMaterial ciPipelineMaterials = 1;
+  string CloningMode = 2;
 }
 
 message CiPipelineMaterial {
